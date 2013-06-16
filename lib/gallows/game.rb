@@ -5,7 +5,8 @@ module Gallows
     end
 
     def init
-      count = 6
+      @count = 6
+      @a = Array.new
       @output.puts 'Welcome to Gallows!'
       @output.puts 'Enter the word you want to make a:'
     end
@@ -17,7 +18,7 @@ module Gallows
       loop do
         @output.puts 'Enter the letter'
         @answer = @input.gets.chomp
-        guess(answer)
+        guess(@answer)
       end
     end
 
@@ -30,8 +31,8 @@ module Gallows
     end
 
     def slovo(var)
-      array[x] = @answer
-      array.join
+      @array[x] = @answer
+      @array.join
       if @word.length == array.length
         @output.puts array
       end      
@@ -42,14 +43,19 @@ module Gallows
         @output.puts 'Wrong number arguments'
       else
         x = @word.index(guess)
-        if x != nil
-          @output.puts 'Index your letter'
-          @output.puts x 
-          slovo(x)
-        else
+        if x == nil
           @count -= 1
+        else
+          @output.puts "Index your letter: #{x}"
+          @a[x] = guess
+          @a.join
+          if @word.length == @a.length
+            @output.puts @a
+          #else
+
+          end           
         end
-        if @count != 0 or @word.length == array.length
+        if @count != 0 || @word.length == @a.length
           finish
         end
       end
@@ -57,4 +63,4 @@ module Gallows
   end
 end
 
-Gallows::Game.new().start
+Gallows::Game.new(STDOUT).start
