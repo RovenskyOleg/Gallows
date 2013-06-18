@@ -7,6 +7,7 @@ module Gallows
     def init
       @count = 6
       @a = Array.new    #храниет угаданные буквы слова
+      #@a=""
       @output.puts 'Welcome to Gallows!'
       @output.puts 'Enter the word you want to make a:'
     end
@@ -49,13 +50,17 @@ module Gallows
           @output.puts "Index your letter: #{x}"
           @output.puts "You have tru: #{@count}"
           @a[x] = guess
-          @a.compact!
-          @a.join
+          @output.puts "To guess the letter: #{@a}"
         end   
-      end        
-        
-      if @count == 0 or @word.length == @a.length
+      end 
+      if @count == 0 #or @word.length == @a.length
         finish
+      else
+        if @a.count(nil) == 0
+          if @word.length == @a.length
+            finish
+          end
+        end
       end
     end
   end
