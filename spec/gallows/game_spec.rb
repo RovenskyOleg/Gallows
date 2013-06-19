@@ -6,9 +6,9 @@ module Gallows
     let(:game)   { Game.new(output, input) }
     
     describe "#init" do
-      it "sends array" do
-        #a.new
-        a[].should be_empty => a[].empty? #passes
+      it "check array" do
+        a = []
+        a.should be_empty 
         game.init
       end
       it "sends a welcome message" do
@@ -21,43 +21,50 @@ module Gallows
       end
     end
 
-    describe "#start" do
-      it "sends word" do
-        game.start
-        output.should_receive(:puts).with('Enter the word')
-        Game.any_instance.stub(:init)
-        Game.any_instance.stub(:guess)
-        game.start("w")
-      end
-    end
-
     describe "#guess" do
-      context "No valid number arguments" do
-        xit "sends not valid > 1" do
-          game.start('welcome')
-          output.should_receive(:puts).with('Wrong number arguments')
-          Game.any_instance.stub(:finish)
-          game.guess('we')
-        end
-        xit "sends reduction attempts" do
+      before(:each) do
+        game.init
+        game.instance_variable_set(:@a, "a")
+        game.instance_variable_set(:@word, "a")
+      end
 
+      context "No valid number arguments" do
+        before(:each) { output.should_receive(:puts).with("Wrong number arguments") }
+        it "is too short" do
+          game.guess("")
         end
-        xit "send tru letter" do
+        it "is too long" do
+          game.guess("wi")
         end
+      end
+      before(:each) do
+        game.init
+        game.instance_variable_set(:@x, "")
+      end
+      it "sends reduction attempts" do
+        x = nil
+        x.should be_nil
+      end
+      it "sends tru letter" do
+        x = '1'
+        x.should_not be_nil
       end
     end
 
     describe "#finish" do
       context "Result of the game" do 
-        xit "sends Game over" do
+        it "Game over when counter = 0" do
+          count = 0
+          count.should be_zero
         end
-        xit "sends You win" do
+        it "You win" do
+          count = 1
+          a = "letter"
+          word = "letter"
+          count.should_not be_zero 
+          word.should == a
         end
-      
-      context "sends game"
-        xit "sends Play again? [y/n]" do
-        end
-        it "exit" do
+        it "Exit Game" do
           lambda { output.finish; exit }.should raise_error(SystemExit)  
         end
       end
