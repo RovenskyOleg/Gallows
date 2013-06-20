@@ -13,8 +13,16 @@ module Gallows
 
     def start
       init
+      stty_settings = %x[stty -g]
       @output.puts 'Enter the word'
-      @word = @input.gets.chomp
+      begin
+        %x[stty -echo]
+        @word = gets.chomp
+      ensure
+        %x[stty #{stty_settings}]
+      end
+      str = "*"*@word.length
+      puts "length word: #{str}"
       loop do
         @output.puts 'Enter the letter'
         @answer = @input.gets.chomp
@@ -67,4 +75,4 @@ module Gallows
   end
 end
 
-#Gallows::Game.new(STDOUT).start
+Gallows::Game.new(STDOUT).start
