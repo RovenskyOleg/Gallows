@@ -21,25 +21,40 @@ module Gallows
       end
     end
 
+    describe "#start" do
+      context "No valid word" do
+        it "Input number" do
+          Game.any_instance.stub(:init)
+          input.stub(:gets).and_return("1")
+          Game.any_instance.stub(:looop)
+          game.start
+        end
+      end
+    end
+
     describe "#guess" do
       before(:each) do
         game.init
         game.instance_variable_set(:@a, "a")
         game.instance_variable_set(:@word, "a")
+
       end
 
-      context "No valid number arguments" do
-        before(:each) { output.should_receive(:puts).with("Wrong number arguments") }
+      context "No valid answer" do
+        before(:each) do
+          output.should_receive(:puts).with("Wrong number arguments") 
+          game.init
+          game.instance_variable_set(:@x, "")
+        end 
         it "is too short" do
           game.guess("")
         end
         it "is too long" do
           game.guess("wi")
         end
-      end
-      before(:each) do
-        game.init
-        game.instance_variable_set(:@x, "")
+        it "Input number" do
+          game.guess("1")
+        end
       end
       it "sends reduction attempts" do
         x = nil

@@ -17,7 +17,7 @@ module Gallows
       @output.puts 'Enter the word'
       begin
         %x[stty -echo]
-        @word = gets.chomp
+        @word = @input.gets.chomp
         unless valid_word?(@word) 
           @output.puts 'Wrong number arguments'
         end 
@@ -26,6 +26,10 @@ module Gallows
       end
       str = "*"*@word.length
       puts "length word: #{str}"
+      looop
+    end
+
+    def looop 
       loop do
         @output.puts 'Enter the letter'
         @answer = @input.gets.chomp
