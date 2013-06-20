@@ -18,6 +18,9 @@ module Gallows
       begin
         %x[stty -echo]
         @word = gets.chomp
+        unless valid_word?(@word) 
+          @output.puts 'Wrong number arguments'
+        end 
       ensure
         %x[stty #{stty_settings}]
       end
@@ -30,23 +33,8 @@ module Gallows
       end
     end
 
-    def finish
-      if @count == 0
-        @output.puts 'Game over'
-      else
-        @output.puts "Answer: #{@a}"
-        @output.puts 'You win'
-      end
-      @output.puts "Play again? [y/n]"
-      if (gets.chomp == "y")
-        @output.puts start
-      else
-        exit
-      end
-    end
-
     def guess(guess)
-      if guess.length != 1
+      unless valid_answer?(guess) 
         @output.puts 'Wrong number arguments'
       else
         x = @word.index(guess) #индекс угаданной буквы
@@ -72,7 +60,29 @@ module Gallows
         end
       end
     end
+
+    private
+    def finish
+      if @count == 0
+        @output.puts 'Game over'
+      else
+        @output.puts "Answer: #{@a}"
+        @output.puts 'You win'
+      end
+      @output.puts "Play again? [y/n]"
+      if (gets.chomp == "y")
+        @output.puts start
+      else
+        exit
+      end
+    end
+
+    def valid_word? (word)
+      word.match /^[a-zA-Z]+$/
+    end
+
+    def valid_answer?(answer)
+      answer.match /^[a-zA-Z]{1}$/
+    end
   end
 end
-
-Gallows::Game.new(STDOUT).start
